@@ -8,7 +8,6 @@ import (
 const inflationRate = 2.5
 
 func main() {
-	const inflationRate float64 = 2.5
 	var investmentAmount, years, expectedReturnRate float64
 
 	fmt.Print("Enter investment amount: ")
@@ -31,8 +30,8 @@ func main() {
 	fmt.Print(formattedFv, formattedRfv)
 }
 
-func calculateFutureValues(investmentAmount, expectedReturnRate, years float64) (float64, float64) {
-	fv := investmentAmount * math.Pow(1 + expectedReturnRate / 100, years)
-	rfv := fv / math.Pow(1 + inflationRate / 100, years)
+func calculateFutureValues(investmentAmount, expectedReturnRate, years float64) (fv float64, rfv float64) {
+	fv = investmentAmount * math.Pow(1 + expectedReturnRate / 100, years)
+	rfv = fv / math.Pow(1 + inflationRate / 100, years)
 	return fv, rfv
 }
