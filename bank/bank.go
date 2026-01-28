@@ -1,38 +1,16 @@
 package main
 
 import (
-	"errors"
 	"fmt"
-	"os"
-	"strconv"
+
+	"example.com/bank/fileops"
 )
 
 const accountBalanceFile = "balance.txt"
 
-func writeBalanceToFile(balance float64) {
-	balanceText := fmt.Sprint(balance)
-	os.WriteFile(accountBalanceFile, []byte(balanceText), 0644)
-}
-
-func getBalanceFromFile() (float64, error) {
-	data, err := os.ReadFile(accountBalanceFile)
-
-	if err != nil {
-		return 1000, errors.New("Failed to find balance file, defaulting to 1000")
-	}
-
-	balanceText := string(data)
-	balance, err := strconv.ParseFloat(balanceText, 64)
-
-	if err != nil {
-		return 1000, errors.New("Failed to parse stored balance, defaulting to 1000")
-	}
-	return balance, nil
-}
-
 func main() {
 
-	var accountBalance, err = getBalanceFromFile()
+	var accountBalance, err = fileops.GetFloatFromFile(accountBalanceFile)
 
 	if err != nil {
 		fmt.Println("Error")
@@ -43,11 +21,7 @@ func main() {
 	fmt.Println("Welcome to Go Bank")
 
 	for {
-		fmt.Println("What do you want to do?")
-		fmt.Println("1. Check Balance")
-		fmt.Println("2. Deposit Funds")
-		fmt.Println("3. Withdraw Funds")
-		fmt.Println("4. Exit")
+		presentOptions()
 
 		var choice int
 		fmt.Print("your choice: ")
@@ -65,7 +39,7 @@ func main() {
 				continue
 			}
 			accountBalance += depositAmount
-			writeBalanceToFile(accountBalance)
+			fileops.WriteFloatToFile(accountBalance, accountBalanceFile)
 			fmt.Println("Deposit successful. New balance is: ", accountBalance)
 		case 3:
 			var withdrawAmount float64
@@ -76,7 +50,7 @@ func main() {
 				continue
 			} else {
 				accountBalance -= withdrawAmount
-				writeBalanceToFile(accountBalance)
+				fileops.WriteFloatToFile(accountBalance, accountBalanceFile)
 				fmt.Println("Withdrawal successful. New balance is: ", accountBalance)
 			}
 		default:
@@ -84,34 +58,5 @@ func main() {
 			
 			return
 		}
-
-		// if choice == 1 {
-		// 	fmt.Println("Your balance is: ", accountBalance)
-		// } else if choice == 2 {
-		// 	var depositAmount float64
-		// 	fmt.Print("Enter deposit amount: ")
-		// 	fmt.Scan(&depositAmount)
-		// 	if depositAmount <= 0 {
-		// 		fmt.Println("Deposit amount must be positive.")
-		// 		continue
-		// 	}
-		// 	accountBalance += depositAmount
-		// 	fmt.Println("Deposit successful. New balance is: ", accountBalance)
-		// } else if choice == 3 {
-		// 	var withdrawAmount float64
-		// 	fmt.Print("Enter withdraw amount: ")
-		// 	fmt.Scan(&withdrawAmount)
-		// 	if withdrawAmount > accountBalance {
-		// 		fmt.Println("Insufficient funds.")
-		// 		continue
-		// 	} else {
-		// 		accountBalance -= withdrawAmount
-		// 		fmt.Println("Withdrawal successful. New balance is: ", accountBalance)
-		// 	}
-		// } else {
-		// 	fmt.Println("Okay, goodbye then!")
-		// 	break
-		// }
 	}
-	// fmt.Println("Thank you for banking with us!")
 }
