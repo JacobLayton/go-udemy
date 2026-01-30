@@ -16,7 +16,8 @@ func (u user) outputUserDetails() {
 	fmt.Println(u.firstName, u.lastName, u.birthdate, u.createdAt)
 }
 
-func (u user) clearUserName() {
+// Since we're trying to mutate the original struct, we need to use a pointer receiver
+func (u *user) clearUserName() {
 	u.firstName = ""
 	u.lastName = ""
 }
