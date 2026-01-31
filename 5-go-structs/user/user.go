@@ -20,6 +20,12 @@ type Admin struct {
 	User
 }
 
+type str string
+
+func (text str) log() {
+	fmt.Println(text)
+}
+
 func (u User) OutputUserDetails() {
 	fmt.Println(u.firstName, u.lastName, u.birthdate, u.createdAt)
 }
@@ -48,6 +54,8 @@ func New(firstName, lastName, birthdate string) (*User, error) {
 	if firstName == "" || lastName == "" || birthdate == "" {
 		return nil, errors.New("all fields are required")
 	}
+	var printedName str = "Jacob"
+	printedName.log()
 
 
 	return &User{
