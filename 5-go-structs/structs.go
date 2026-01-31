@@ -20,6 +20,14 @@ func main() {
 		return
 	}
 
+	admin := user.NewAdmin( "admin@test.com", "123456")
+
+	// can call the embedded struct's method directly
+	admin.User.OutputUserDetails();
+	// or, we made the embedded struct anonymous, we can call its methods more simply
+	admin.ClearUserName();
+	admin.OutputUserDetails();
+
 	appUser.OutputUserDetails()
 	appUser.ClearUserName()
 	appUser.OutputUserDetails()
