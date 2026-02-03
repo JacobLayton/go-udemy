@@ -1,42 +1,36 @@
 package main
 
 import (
-	"errors"
 	"fmt"
+
+	"example.com/note/note"
 )
 
-func getNoteData() (string, string, error) {
-	title, err := getUserInput("Note Tile:")
- if err != nil {
- 	return "", "", err
- }
-
- content, err := getUserInput("Note Content:")
- if err != nil {
- 	return "", "", err
- }
-
- return title, content, nil
-}
-
 func main() {
-	title, content, err := getNoteData()
+	title, content := getNoteData()
+
+	userNote, err := note.New(title, content)
+
 	if err != nil {
 		fmt.Println("Error getting note data:", err)
 		return
 	}
 	
-	fmt.Println("Note Title:", title)
-	fmt.Println("Note Content:", content)
+	userNote.DisplayNote()
 }
 
-func getUserInput(prompt string) (string, error) {
+func getNoteData() (string, string) {
+	title := getUserInput("Note Tile:")
+
+	content := getUserInput("Note Content:")
+
+	return title, content
+}
+
+func getUserInput(prompt string) string {
 	fmt.Print(prompt)
 	var value string
 	fmt.Scan(&value)
 
-	if value == "" {
-		return "", errors.New("Invalid input.")
-	}
-	return value, nil
+	return value
 }
