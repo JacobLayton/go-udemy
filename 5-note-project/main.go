@@ -61,7 +61,12 @@ func saveData(data saver) error {
 		return err
 	}
 
-	fmt.Println("Note saved successfully.")
+	switch data.(type) {
+	case note.Note:	
+		fmt.Println("Note saved successfully.")
+	case todo.Todo:
+		fmt.Println("Todo saved successfully.")
+	}
 	return nil
 }
 
