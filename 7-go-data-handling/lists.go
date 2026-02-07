@@ -27,6 +27,9 @@ func main() {
 	courseGoals[1] = "Master Arrays"
 	courseGoals = append(courseGoals, "Build an app")
 	fmt.Println("Updated course goals: ", courseGoals)
+	additionalCourseGoals := []string{"Learn about spread operator", "implement spread operator"}
+	courseGoals = append(courseGoals, additionalCourseGoals...)
+	fmt.Println("Updated course goals with spread operator: ", courseGoals)
 
 	products := []product{
 		{title: "A Book", price: 10.99, id: 1},
