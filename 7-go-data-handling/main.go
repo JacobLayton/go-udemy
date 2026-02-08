@@ -15,7 +15,8 @@ func main() {
 	// userNames = append(userNames, "Manuel")
 	// When using make to create a slice, appending will add after the empty slots, so we assign directly to the index
 	userNames[0] = "Max"
-	userNames[1] = "Manuel"
+	// Note that index 1 is empty because we're appending after the originally allocated slot
+	userNames = append(userNames, "Manuel")
 	userNames = append(userNames, "Jacob")
 
 	fmt.Println(userNames)
@@ -33,4 +34,14 @@ func main() {
 	// example, we set the initial capacity of the userNames slice to 5, which means it can hold up to 5 elements
 	// before needing to allocate more memory. Similarly, we set the initial size of the courseRatings map to 3,
 	// which means it can hold up to 3 key-value pairs before needing to allocate more memory.
+
+	// for loops with arrays and slices
+	for index, value := range userNames {
+		fmt.Println("Index: ", index, " Value: ", value)
+	}
+	// for loop through map
+	for key, value := range courseRatings {
+		fmt.Println("Course: ", key, " Rating: ", value)
+	}
+
 }
