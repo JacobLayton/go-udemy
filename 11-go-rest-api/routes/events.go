@@ -3,6 +3,7 @@ package routes
 import (
 	"net/http"
 	"strconv"
+	"strings"
 
 	"example.com/restapi/models"
 	"example.com/restapi/utils"
@@ -33,7 +34,24 @@ func getEvent(context *gin.Context) {
 }
 
 func createEvent(context *gin.Context) {
-	token := context.Request.Header.Get("Authorization")
+	token := context.GetHeader("Authorization")
+	if len(token) > 0 {
+		parts := strings.Split(token, " ")
+		if len(parts) == 2 && parts[0] == "Bearer" {
+			token = parts[1]
+		} else {
+			context.JSON(http.StatusBadRequest, gin.H{
+				"message": "Invalid Authorization header format",
+			})
+			return
+		}
+	}else {
+		context.JSON(http.StatusUnauthorized, gin.H{
+			"message": "Not Authorization",
+		})
+		return
+	}
+	
 	if token == "" {
 		context.JSON(http.StatusUnauthorized, gin.H{"message": "Not authorized"})
 		return
