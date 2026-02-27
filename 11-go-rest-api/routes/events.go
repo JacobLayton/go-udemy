@@ -3,10 +3,8 @@ package routes
 import (
 	"net/http"
 	"strconv"
-	"strings"
 
 	"example.com/restapi/models"
-	"example.com/restapi/utils"
 	"github.com/gin-gonic/gin"
 )
 
@@ -34,42 +32,15 @@ func getEvent(context *gin.Context) {
 }
 
 func createEvent(context *gin.Context) {
-	token := context.GetHeader("Authorization")
-	if len(token) > 0 {
-		parts := strings.Split(token, " ")
-		if len(parts) == 2 && parts[0] == "Bearer" {
-			token = parts[1]
-		} else {
-			context.JSON(http.StatusBadRequest, gin.H{
-				"message": "Invalid Authorization header format",
-			})
-			return
-		}
-	}else {
-		context.JSON(http.StatusUnauthorized, gin.H{
-			"message": "Not Authorization",
-		})
-		return
-	}
-	
-	if token == "" {
-		context.JSON(http.StatusUnauthorized, gin.H{"message": "Not authorized"})
-		return
-	}
-	userId, err := utils.VerifyToken(token)
-	if err != nil {
-		context.JSON(http.StatusUnauthorized, gin.H{"message": "Not Authorized"})
-		return
-	}
-
 	var event models.Event
-	err = context.ShouldBindJSON(&event)
+	err := context.ShouldBindJSON(&event)
 
 	if err != nil {
 		context.JSON(http.StatusBadRequest, gin.H{"message": "Could not parse req data"})
 		return
 	}
 
+	userId := context.GetInt64("userId")
 	event.UserID = userId
 	err = event.Save()
 	if err != nil {
